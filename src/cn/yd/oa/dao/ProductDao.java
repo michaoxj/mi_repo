@@ -2,13 +2,52 @@ package cn.yd.oa.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import cn.yd.oa.model.Product;
 import cn.yd.oa.utils.JdbcUtils;
 
 // dao是数据访问层.
 public class ProductDao extends BaseDao1 {
+	
+	//编写一个根据id查询对象的方法
+	public Product getById(Integer id) {
+		Product product=new Product();
+		String sql="select * from product where id = ?";
+		//1:连接数据库
+		JdbcUtils utils = new JdbcUtils();
+		Connection connection = utils.getConnection();
+		//2:编译和执行SQL语句
+		
+		PreparedStatement pre;
+		try {
+			pre = connection.prepareStatement(sql);
+			pre.setInt(1, id);
+			ResultSet rs = pre.executeQuery();
+			if(rs.next()) {
+				product.setId(rs.getInt("id"));
+				product.setName(rs.getString("name"));
+				product.setPrice(rs.getDouble("price"));
+				product.setRemark(rs.getString("remark"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+		
+		//3:返回查询的结果集
+		return product;
+		//4:释放资源
+		
+//		return null;
+		
+	}
+	
+	
 	
 	public void delete(Integer id) {
 		String sql = "delete from product where id = ?";

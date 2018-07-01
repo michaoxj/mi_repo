@@ -18,7 +18,14 @@ public class ProductDaoTest1 {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-
+	
+	@Test
+	public void testgetById() {
+		Product product = productDao.getById(2);
+		System.out.println(product);
+	}
+	
+	
 	@Test
 	public void testDelete() {
 		productDao.delete(4);
