@@ -8,9 +8,34 @@ import cn.yd.oa.model.Product;
 import cn.yd.oa.utils.JdbcUtils;
 
 // dao是数据访问层.
-public class ProductDao {
+public class ProductDao extends BaseDao1 {
 	
-	// alt+/
+	public void delete(Integer id) {
+		String sql = "delete from product where id = ?";
+		super.executeUpdate(sql, new Object[] {id});
+	}
+	
+	public void update(Product product) {
+		String sql = "update product set name=?,price=?,remark=? where id = ?";
+		super.executeUpdate(sql, new Object[] {product.getName(),product.getPrice(),product.getRemark(),product.getId()});
+	}
+	
+	public void save(Product product) {
+		String sql = "insert into product (name,price,remark) values (?,?,?)";
+		super.executeUpdate(sql, new Object[] {product.getName(),product.getPrice(),product.getRemark()});
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+/*
+ * // alt+/
 	public static void main(String[] args) {
 		ProductDao dao = new ProductDao();
 		Product p=new Product();
@@ -97,5 +122,5 @@ public class ProductDao {
 			throw new RuntimeException(e);
 		}
 		// 5: 关闭Connection释放资源
-	}
+	}*/
 }

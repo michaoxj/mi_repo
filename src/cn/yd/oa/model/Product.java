@@ -3,6 +3,9 @@ package cn.yd.oa.model;
 import java.util.Date;
 
 // 类-->表   对象-->记录   属性 ---> 字段
+
+//在类中,以类同名的方法称为构造方法,默认有一个缺省的无参构造方法;
+
 public class Product {
     // 属性是私有的,不能直接访问.
 	private Integer id;
