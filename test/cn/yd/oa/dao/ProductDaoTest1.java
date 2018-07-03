@@ -1,5 +1,7 @@
 package cn.yd.oa.dao;
 
+import java.util.ArrayList;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +19,14 @@ public class ProductDaoTest1 {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+	}
+	
+	@Test
+	public void testqueryByName() {
+		ArrayList<Product> proList = productDao.queryByName("%%");
+		for(Product temp:proList) {
+			System.out.println(temp.toString());
+		}
 	}
 	
 	@Test

@@ -4,14 +4,54 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.naming.spi.DirStateFactory.Result;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.yd.oa.model.Product;
 import cn.yd.oa.utils.JdbcUtils;
 
 // dao是数据访问层.
 public class ProductDao extends BaseDao1 {
+	
+	public ArrayList<Product> queryByName(String name) {
+		ArrayList<Product> proList = new ArrayList<Product>();
+		String sql="select * from product where name like ?";
+		//1:连接数据库
+		JdbcUtils utils = new JdbcUtils();
+		Connection connection = utils.getConnection();
+		//2:编译和执行SQL语句
+		
+		PreparedStatement pre;
+		try {
+			pre = connection.prepareStatement(sql);
+			pre.setString(1, "%" + name + "%");
+			ResultSet rs = pre.executeQuery();
+			
+			while(rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt("id"));
+				product.setName(rs.getString("name"));
+				product.setPrice(rs.getDouble("price"));
+				product.setRemark(rs.getString("remark"));
+				product.setDate(rs.getDate("date"));
+				proList.add(product);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		//3:返回查询的结果集
+		return proList;
+		//4:释放资源
+		
+	}
 	
 	//编写一个根据id查询对象的方法
 	public Product getById(Integer id) {
@@ -36,6 +76,18 @@ public class ProductDao extends BaseDao1 {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
+		}finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}finally {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		
 		

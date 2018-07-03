@@ -33,8 +33,15 @@ public class BaseDao1  {
 			// 可以处理异常: 发送异常到管理员邮箱
 			// 直接把当前异常向上抛出
 			throw new RuntimeException(e);
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		// 5: 关闭Connection释放资源
+		
 	}
 
 
